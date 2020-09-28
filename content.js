@@ -36,30 +36,26 @@ const showFlash = (messageString) => {
 
 showFlash("loading yt_extension...");
 
-const getCurrentVid = () => document.querySelector("video");
-
 navigator.mediaSession.setActionHandler("previoustrack", () => {
-  const video = getCurrentVid();
-  if (!video) return;
+  if (!document.querySelector("video")) return;
   showFlash("rewinding 5 s...");
-  video.currentTime = video.currentTime - 5;
+  document.querySelector("video").currentTime -= 5;
 });
 
 navigator.mediaSession.setActionHandler("nexttrack", function () {
-  const video = getCurrentVid();
-  if (!video) return;
+  if (!document.querySelector("video")) return;
   showFlash("adding 5 s...");
-  video.currentTime = video.currentTime + 5;
+  document.querySelector("video").currentTime += 5
 });
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "F6") {
-    const vid = getCurrentVid();
+    const vid = document.querySelector("video");
     if (!vid) return;
     vid.playbackRate += 0.25;
     showFlash("vid playback rate changed to " + vid.playbackRate);
   } else if (e.key === "F5") {
-    const vid = getCurrentVid();
+    const vid = document.querySelector("video");
     if (!vid) return;
     const pbr = vid.playbackRate;
     vid.playbackRate = pbr === 0.25 ? 0.25 : pbr - 0.25;
