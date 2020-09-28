@@ -1,18 +1,54 @@
-console.log("loading yt_extension...");
+const makeFlashDiv = () => {
+  const element = document.createElement("div");
+
+  const styles = {
+    position: "absolute",
+    backgroundColor: "black",
+    color: "white",
+    top: 0,
+    left: 0,
+    zIndex: 1000000,
+    padding: "5px",
+  };
+
+  Object.entries(styles).forEach(([attr, val]) => {
+    element.style[attr] = val;
+  });
+
+  return element;
+};
+const log = console.log;
+const showFlash = (messageString) => {
+  log(messageString);
+
+  const element = makeFlashDiv();
+
+  const txt = document.createTextNode(messageString);
+  element.appendChild(txt);
+
+  const primary = document.querySelector("body");
+
+  primary.appendChild(element);
+  setTimeout(() => {
+    primary.removeChild(element);
+  }, 200);
+};
+
+showFlash("loading yt_extension...");
 
 const getCurrentVid = () => document.querySelector("video");
 
 navigator.mediaSession.setActionHandler("previoustrack", () => {
   const video = getCurrentVid();
   if (!video) return;
-  console.log("rewinding 5 s...");
+  showFlash("rewinding 5 s...");
   video.currentTime = video.currentTime - 5;
 });
 
 navigator.mediaSession.setActionHandler("nexttrack", function () {
   const video = getCurrentVid();
   if (!video) return;
-  console.log("adding 5 s...");
+  showFlash("adding 5 s...");
   video.currentTime = video.currentTime + 5;
 });
 
@@ -21,12 +57,12 @@ document.addEventListener("keydown", (e) => {
     const vid = getCurrentVid();
     if (!vid) return;
     vid.playbackRate += 0.25;
-    console.log("vid playback rate changed to " + vid.playbackRate);
+    showFlash("vid playback rate changed to " + vid.playbackRate);
   } else if (e.key === "F5") {
     const vid = getCurrentVid();
     if (!vid) return;
     const pbr = vid.playbackRate;
     vid.playbackRate = pbr === 0.25 ? 0.25 : pbr - 0.25;
-    console.log("vid playback rate changed to " + vid.playbackRate);
+    showFlash("vid playback rate changed to " + vid.playbackRate);
   }
 });
