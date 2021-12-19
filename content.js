@@ -36,17 +36,19 @@ const showFlash = (messageString) => {
 
 showFlash("loading yt_extension...");
 
-navigator.mediaSession.setActionHandler("previoustrack", () => {
-  if (!document.querySelector("video")) return;
-  showFlash("rewinding 5 s...");
-  document.querySelector("video").currentTime -= 5;
-});
+const setupMediaSession = () => {
+  navigator.mediaSession.setActionHandler("previoustrack", () => {
+    if (!document.querySelector("video")) return;
+    showFlash("rewinding 5 s...");
+    document.querySelector("video").currentTime -= 5;
+  });
 
-navigator.mediaSession.setActionHandler("nexttrack", function () {
-  if (!document.querySelector("video")) return;
-  showFlash("adding 5 s...");
-  document.querySelector("video").currentTime += 5
-});
+  navigator.mediaSession.setActionHandler("nexttrack", function () {
+    if (!document.querySelector("video")) return;
+    showFlash("adding 5 s...");
+    document.querySelector("video").currentTime += 5;
+  });
+};
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "F6") {
@@ -60,5 +62,8 @@ document.addEventListener("keydown", (e) => {
     const pbr = vid.playbackRate;
     vid.playbackRate = pbr === 0.25 ? 0.25 : pbr - 0.25;
     showFlash("vid playback rate changed to " + vid.playbackRate);
+  } else if (e.key === "e" && e.metaKey) {
+    showFlash("setting up media session...");
+    setupMediaSession();
   }
 });
