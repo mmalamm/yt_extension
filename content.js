@@ -48,6 +48,18 @@ const setupMediaSession = () => {
     showFlash("adding 5 s...");
     document.querySelector("video").currentTime += 5;
   });
+
+  navigator.mediaSession.setActionHandler("pause", () => {
+    if (!document.querySelector("video")) return;
+    showFlash("pausing...");
+    document.querySelector("video").pause();
+  });
+
+  navigator.mediaSession.setActionHandler("play", () => {
+    if (!document.querySelector("video")) return;
+    showFlash("pausing...");
+    document.querySelector("video").play();
+  });
 };
 
 document.addEventListener("keydown", (e) => {
