@@ -31,10 +31,10 @@ const showFlash = (messageString) => {
   primary.appendChild(element);
   setTimeout(() => {
     primary.removeChild(element);
-  }, 200);
+  }, 500);
 };
 
-showFlash("loading yt_extension...");
+showFlash("now loading yt_extension...");
 
 const setupMediaSession = () => {
   navigator.mediaSession.setActionHandler("previoustrack", () => {
@@ -77,5 +77,19 @@ document.addEventListener("keydown", (e) => {
   } else if (e.key === "e" && e.metaKey) {
     showFlash("setting up media session...");
     setupMediaSession();
+  } else if (e.key === "r" && e.ctrlKey) {
+    // refresh current video page at current seek position
+    const currentPos = document.querySelector("video").currentTime | 0;
+    const q = window.location.search
+      .replace("?", "")
+      .split("&")
+      .reduce((a, b) => {
+        const _a = { ...a };
+        const [k, v] = b.split("=");
+        _a[k] = v;
+        return _a;
+      }, {});
+    const newLocation = `https://youtube.com/watch?v=${q.v}&t=${currentPos}s`;
+    window.location.href = newLocation;
   }
 });
