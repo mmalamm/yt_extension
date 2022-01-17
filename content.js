@@ -34,8 +34,6 @@ const showFlash = (messageString) => {
   }, 500);
 };
 
-showFlash("now loading yt_extension...");
-
 const setupMediaSession = () => {
   navigator.mediaSession.setActionHandler("previoustrack", () => {
     if (!document.querySelector("video")) return;
@@ -62,34 +60,57 @@ const setupMediaSession = () => {
   });
 };
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "F6") {
+function attachSpeedKeyListeners() {
+  const increaseSpeed = () => {
+    // if (!e.key !== "F6") return;
     const vid = document.querySelector("video");
-    if (!vid) return;
+    if (!vid) return showFlash("video not found; could not increase speed");
     vid.playbackRate += 0.25;
-    showFlash("vid playback rate changed to " + vid.playbackRate);
-  } else if (e.key === "F5") {
+    showFlash("vid playback rate increased to " + vid.playbackRate);
+  };
+  const decreaseSpeed = () => {
+    // if (e.key === "F5") return;
     const vid = document.querySelector("video");
-    if (!vid) return;
+    if (!vid) return showFlash("video not found; could not decrease speed");
     const pbr = vid.playbackRate;
     vid.playbackRate = pbr === 0.25 ? 0.25 : pbr - 0.25;
     showFlash("vid playback rate changed to " + vid.playbackRate);
-  } else if (e.key === "e" && e.metaKey) {
-    showFlash("setting up media session...");
-    setupMediaSession();
-  } else if (e.key === "r" && e.ctrlKey) {
-    // refresh current video page at current seek position
-    const currentPos = document.querySelector("video").currentTime | 0;
-    const q = window.location.search
-      .replace("?", "")
-      .split("&")
-      .reduce((a, b) => {
-        const _a = { ...a };
-        const [k, v] = b.split("=");
-        _a[k] = v;
-        return _a;
-      }, {});
-    const newLocation = `https://youtube.com/watch?v=${q.v}&t=${currentPos}s`;
-    window.location.href = newLocation;
-  }
-});
+  };
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "F5") {
+      decreaseSpeed();
+    } else if (e.key === "F6") {
+      increaseSpeed();
+    }
+  });
+}
+
+function reloadWindowAtCurrentTimestamp() {
+  const currentPos = document.querySelector("video").currentTime | 0;
+  const q = window.location.search
+    .replace("?", "")
+    .split("&")
+    .reduce((a, b) => {
+      const _a = { ...a };
+      const [k, v] = b.split("=");
+      _a[k] = v;
+      return _a;
+    }, {});
+  const newLocation = `https://youtube.com/watch?v=${q.v}&t=${currentPos}s`;
+  window.location.href = newLocation;
+}
+
+setTimeout(() => {
+  showFlash("now loading yt_extension...");
+  attachSpeedKeyListeners();
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "e" && e.metaKey) {
+      setupMediaSession();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "r" && e.ctrlKey) reloadWindowAtCurrentTimestamp();
+  });
+}, 0);
