@@ -35,42 +35,43 @@ const showFlash = (messageString) => {
 };
 
 const setupMediaSession = () => {
+  showFlash("setting up media session...");
   navigator.mediaSession.setActionHandler("previoustrack", () => {
-    if (!document.querySelector("video")) return;
+    if (!getCurrentVideo()) return;
     showFlash("rewinding 5 s...");
-    document.querySelector("video").currentTime -= 5;
+    getCurrentVideo().currentTime -= 5;
   });
 
   navigator.mediaSession.setActionHandler("nexttrack", function () {
-    if (!document.querySelector("video")) return;
+    if (!getCurrentVideo()) return;
     showFlash("adding 5 s...");
-    document.querySelector("video").currentTime += 5;
+    getCurrentVideo().currentTime += 5;
   });
 
   navigator.mediaSession.setActionHandler("pause", () => {
-    if (!document.querySelector("video")) return;
+    if (!getCurrentVideo()) return;
     showFlash("pausing...");
-    document.querySelector("video").pause();
+    getCurrentVideo().pause();
   });
 
   navigator.mediaSession.setActionHandler("play", () => {
-    if (!document.querySelector("video")) return;
+    if (!getCurrentVideo()) return;
     showFlash("pausing...");
-    document.querySelector("video").play();
+    getCurrentVideo().play();
   });
 };
 
 function attachSpeedKeyListeners() {
   const increaseSpeed = () => {
     // if (!e.key !== "F6") return;
-    const vid = document.querySelector("video");
+    const vid = getCurrentVideo();
     if (!vid) return showFlash("video not found; could not increase speed");
     vid.playbackRate += 0.25;
     showFlash("vid playback rate increased to " + vid.playbackRate);
   };
   const decreaseSpeed = () => {
     // if (e.key === "F5") return;
-    const vid = document.querySelector("video");
+    const vid = getCurrentVideo();
     if (!vid) return showFlash("video not found; could not decrease speed");
     const pbr = vid.playbackRate;
     vid.playbackRate = pbr === 0.25 ? 0.25 : pbr - 0.25;
@@ -85,8 +86,14 @@ function attachSpeedKeyListeners() {
   });
 }
 
+const getCurrentVideo = () => {
+  const list = document.querySelectorAll("video");
+  const idx = list.length - 1;
+  return list[idx];
+};
+
 function reloadWindowAtCurrentTimestamp() {
-  const currentPos = document.querySelector("video").currentTime | 0;
+  const currentPos = getCurrentVideo().currentTime | 0;
   const q = window.location.search
     .replace("?", "")
     .split("&")
