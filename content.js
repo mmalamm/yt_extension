@@ -86,13 +86,13 @@ function attachSpeedKeyListeners() {
   });
 }
 
+let video;
 const getCurrentVideo = () => {
-  const list = document.querySelectorAll("#player-container video");
-  let vid;
-  for (let v of list) {
-    if (!v.matches("#video-preview-container video")) vid = v;
-  }
-  return vid;
+  if (video) return video;
+  video = [...document.querySelectorAll("#player-container video")].filter(
+    (v) => !v.matches("#video-preview-container video")
+  )[0];
+  return video;
 };
 
 function reloadWindowAtCurrentTimestamp() {
@@ -117,6 +117,13 @@ setTimeout(() => {
   document.addEventListener("keydown", (e) => {
     if (e.key === "e" && e.metaKey) {
       setupMediaSession();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "s" && e.metaKey) {
+      e.preventDefault();
+      document.querySelector("input#search").focus();
     }
   });
 
