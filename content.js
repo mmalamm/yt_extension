@@ -87,7 +87,11 @@ function attachSpeedKeyListeners() {
 }
 
 const getCurrentVideo = () => {
-  const vid = document.querySelector("#player-container video");
+  const list = document.querySelectorAll("#player-container video");
+  let vid;
+  for (let v of list) {
+    if (!v.matches("#video-preview-container video")) vid = v;
+  }
   return vid;
 };
 
