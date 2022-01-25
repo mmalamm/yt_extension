@@ -86,13 +86,10 @@ function attachSpeedKeyListeners() {
   });
 }
 
-let video;
 const getCurrentVideo = () => {
-  if (video) return video;
-  video = [...document.querySelectorAll("#player-container video")].filter(
+  return [...document.querySelectorAll("#player-container video")].filter(
     (v) => !v.matches("#video-preview-container video")
   )[0];
-  return video;
 };
 
 function reloadWindowAtCurrentTimestamp() {
