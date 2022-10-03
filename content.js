@@ -78,9 +78,9 @@ function attachSpeedKeyListeners() {
     showFlash("vid playback rate changed to " + vid.playbackRate);
   };
   document.addEventListener("keydown", (e) => {
-    if (e.key === "F5") {
+    if (e.key === "[") {
       decreaseSpeed();
-    } else if (e.key === "F6") {
+    } else if (e.key === "]") {
       increaseSpeed();
     }
   });
