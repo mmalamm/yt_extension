@@ -126,5 +126,6 @@ setTimeout(() => {
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "r" && e.ctrlKey) reloadWindowAtCurrentTimestamp();
+    if (e.key === "r" && e.metaKey) reloadWindowAtCurrentTimestamp();
   });
 }, 0);
