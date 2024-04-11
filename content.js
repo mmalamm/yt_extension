@@ -107,6 +107,11 @@ function reloadWindowAtCurrentTimestamp() {
   window.location.href = newLocation;
 }
 
+function deleteGarbageBelowVideo() {
+  const e = document.getElementById("bottom-grid");
+  e.innerHTML = "";
+}
+
 setTimeout(() => {
   showFlash("now loading yt_extension...");
   attachSpeedKeyListeners();
@@ -126,5 +131,9 @@ setTimeout(() => {
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "r" && e.ctrlKey) reloadWindowAtCurrentTimestamp();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "x" && e.ctrlKey) deleteGarbageBelowVideo();
   });
 }, 0);
