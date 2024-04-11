@@ -134,6 +134,9 @@ setTimeout(() => {
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "x" && e.ctrlKey) deleteGarbageBelowVideo();
+    if (e.key === "a" && e.ctrlKey) {
+      console.log("AHSDF");
+      deleteGarbageBelowVideo();
+    }
   });
 }, 0);
