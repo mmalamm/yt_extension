@@ -108,8 +108,10 @@ function reloadWindowAtCurrentTimestamp() {
 }
 
 function deleteGarbageBelowVideo() {
-  const e = document.getElementById("bottom-grid");
-  e.innerHTML = "";
+  const e = document.getElementById("primary");
+  e.remove();
+  const e2 = document.getElementById('secondary');
+  e2.style.width = '90%'
 }
 
 setTimeout(() => {
@@ -135,7 +137,6 @@ setTimeout(() => {
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "a" && e.ctrlKey) {
-      console.log("AHSDF");
       deleteGarbageBelowVideo();
     }
   });
